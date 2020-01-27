@@ -1,0 +1,40 @@
+#!/usr/bin/env pybricks-micropython
+
+from pybricks import ev3brick as brick
+from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
+                                 InfraredSensor, UltrasonicSensor, GyroSensor)
+from pybricks.parameters import (Port, Stop, Direction, Button, Color,
+                                 SoundFile, ImageFile, Align)
+from pybricks.tools import print, wait, StopWatch
+from pybricks.robotics import DriveBase
+
+# Write your program here
+left_motor = Motor(Port.A)
+right_motor = Motor(Port.B)
+color_sensor = ColorSensor(Port.S1)
+robot = DriveBase(left_motor, right_motor, 56, 125)
+i = 1
+while(True):
+
+    while(color_sensor.color() == Color.BLUE):
+
+        robot.drive(50,0)
+
+        while color_sensor.color() == Color.BLUE:
+            print(color_sensor.color())
+            wait (10) 
+        if i < 0:
+            i = 1
+        else:
+            i = -1
+        while color_sensor.color() != Color.BLUE:
+            if i > 0:
+                i += 10
+            else:
+                i -= 10
+    
+            i *= (-1)
+            for k in range(10):
+                robot.drive_time(0,i,300)
+                if color_sensor.color() == Color.BLUE:
+                    break
